@@ -19,8 +19,9 @@
             </Button.Effect>
         </Button>
 
-        <Image Height="100" Width="100" Margin="152,180,427,142" Source="/images/siluette.png"/>
+        <Image Height="100" Width="100" Margin="155,195,424,127" Source="/images/siluette.png" RenderTransformOrigin="0.703,0.361"/>
         
-
+        <TextBlock x:Name="output_Box" Text="" TextWrapping="Wrap" Margin="308,197,150,143" FontFamily="Arial Black"/>
+ 
     </Grid>
 </Window>
