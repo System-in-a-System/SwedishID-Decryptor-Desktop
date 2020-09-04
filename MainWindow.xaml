@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SwedishID_Decryptor_Desktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="SwedishID Decryptor" Height="438" Width="679">
     <Grid>
-
+        <Grid.Background>
+            <ImageBrush ImageSource="/images/bg.jpg" Opacity="0.5"></ImageBrush>
+        </Grid.Background>
     </Grid>
 </Window>
