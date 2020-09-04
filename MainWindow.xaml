@@ -10,18 +10,18 @@
         <Grid.Background>
             <ImageBrush ImageSource="/images/bg.jpg" Opacity="0.5"></ImageBrush>
         </Grid.Background>
-        
-        <Label x:Name="PN_Label" Content="Personal Number:" Margin="132,141,371,243" FontFamily="Arial Black" FontSize="16"/>
-        <TextBox x:Name="PN_textbox" Text="" TextWrapping="Wrap" Margin="308,141,193,255" FontFamily="Arial Black" FontSize="14"/>
-        <Button x:Name="send_Button" Content="-->" Margin="491,141,150,255" Background="#FFCCE7CE" FontFamily="Arial Black" FontWeight="Normal" Click="send_Button_Click">
+
+        <Label x:Name="PN_Label" Content="Personal Number:" Margin="70,108,425,263" FontFamily="Arial Black" FontSize="16"/>
+        <TextBox x:Name="PN_textbox" Text="" TextWrapping="Wrap" Margin="254,105,193,266" FontFamily="Arial Black" FontSize="14"/>
+        <Button x:Name="send_Button" Content="-->" Margin="491,105,119,266" Background="#FFCCE7CE" FontFamily="Arial Black" FontWeight="Normal" Click="send_Button_Click">
             <Button.Effect>
                 <DropShadowEffect BlurRadius="5" Opacity="0.3"/>
             </Button.Effect>
         </Button>
 
-        <Image Height="100" Width="100" Margin="155,195,424,127" Source="/images/siluette.png" RenderTransformOrigin="0.703,0.361"/>
-        
-        <TextBlock x:Name="output_Box" Text="" TextWrapping="Wrap" Margin="308,197,150,143" FontFamily="Arial Black"/>
- 
+        <Image Margin="139,180,448,160" Source="/images/siluette.png" RenderTransformOrigin="0.703,0.361"/>
+
+        <TextBlock x:Name="output_Box" Text="" TextWrapping="Wrap" Margin="259,179,135,69" FontFamily="Arial Black"/>
+
     </Grid>
 </Window>
