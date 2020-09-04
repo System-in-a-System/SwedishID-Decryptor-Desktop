@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>SwedishID_Decryptor_Desktop</RootNamespace>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Iconsmind-Outline-Profile.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
