@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace SwedishID_Decryptor_Desktop
 {
@@ -27,26 +16,59 @@ namespace SwedishID_Decryptor_Desktop
         }
 
         private void send_Button_Click(object sender, RoutedEventArgs e)
-        {            
+        {
             // Retrieve user data from the textbox
             string socialSecurityNumber = PN_textbox.Text;
 
 
-            //__Check user input for validity_________________________________________________________________________//
+            //__Check user input for validity________________________________________________________________________________//
 
-            // Purify the input number-string 
-            string socialSecurityNumberClean = socialSecurityNumber.Replace("-", "");
+            // Initialize SSN patterns in four versions
+            string pattern1 = @"^\d{6}-\d{4}$";
+            string pattern2 = @"^\d{8}-\d{4}$";
+            string pattern3 = @"^\d{10}$";
+            string pattern4 = @"^\d{12}$";
 
-            // If the purified number-string is NOT convertable to float = user input is NOT valid
-            if (!float.TryParse(socialSecurityNumberClean, out float socialSecurityNumberIntegerified))
+            Regex regex1 = new Regex(pattern1);
+            Regex regex2 = new Regex(pattern2);
+            Regex regex3 = new Regex(pattern3);
+            Regex regex4 = new Regex(pattern4);
+
+
+            // Check the current input for validity
+            bool validSocialSecurityNumber = regex1.IsMatch(socialSecurityNumber) || regex2.IsMatch(socialSecurityNumber) ||
+                                             regex3.IsMatch(socialSecurityNumber) || regex4.IsMatch(socialSecurityNumber);
+
+            // If the current input is NOT valid...
+            if (!validSocialSecurityNumber)
             {
-               // inform about an invalid input
-               output_Box.Text = "Invalid Personal Number...";
-                
+                // inform 
+                output_Box.Text = "Invalid Personal Number...";
+
                 // terminate the algorithm
                 return;
             }
-            //________________________________________________________________________________________________________//
+
+
+            // Unify SSN format: YYYYMMDD-XXXX:
+            // If the short pattern of SSN was followed...
+            if (regex1.IsMatch(socialSecurityNumber) || regex3.IsMatch(socialSecurityNumber))
+            {
+                // retrieve year information 
+                int shortYearVersion = int.Parse(socialSecurityNumber.Substring(0, 2));
+
+                // complement the SSN accordingly
+                if (shortYearVersion > 20 && shortYearVersion <= 99)
+                {
+                    socialSecurityNumber = "19" + socialSecurityNumber;
+                }
+                else
+                {
+                    socialSecurityNumber = "20" + socialSecurityNumber;
+                }
+            }
+            //_______________________________________________________________________________________________________________//
+
 
 
             // Information to decrypt from the input data: 
@@ -71,25 +93,37 @@ namespace SwedishID_Decryptor_Desktop
 
             // Retrieve birthday date from personal number:
 
-            // If we are dealing with the short version of personal number...
-            if (socialSecurityNumber.Length >= 10 && socialSecurityNumber.Length <= 11)
+            try
             {
-                birthDate = DateTime.ParseExact(socialSecurityNumber.Substring(0, 6), "yyMMdd", CultureInfo.InvariantCulture);
+                // If we are dealing with the short version of personal number...
+                if (socialSecurityNumber.Length >= 10 && socialSecurityNumber.Length <= 11)
+                {
+                    birthDate = DateTime.ParseExact(socialSecurityNumber.Substring(0, 6), "yyMMdd", CultureInfo.InvariantCulture);
+                }
+                // If we are dealing with the long version of personal number...
+                else if (socialSecurityNumber.Length >= 12 && socialSecurityNumber.Length <= 13)
+                {
+                    birthDate = DateTime.ParseExact(socialSecurityNumber.Substring(0, 8), "yyyyMMdd", CultureInfo.InvariantCulture);
+                }
+                // if the length of the personal number is not valid...
+                else
+                {
+                    // inform about an invalid input
+                    output_Box.Text = "Invalid Personal Number...";
+
+                    // terminate the algorithm
+                    return;
+                }
             }
-            // If we are dealing with the long version of personal number...
-            else if (socialSecurityNumber.Length >= 12 && socialSecurityNumber.Length <= 13)
-            {
-                birthDate = DateTime.ParseExact(socialSecurityNumber.Substring(0, 8), "yyyyMMdd", CultureInfo.InvariantCulture);
-            }
-            // if the length of the personal number is not valid...
-            else
+            catch (Exception)
             {
                 // inform about an invalid input
-                output_Box.Text = "Invalid Personal Number...";
-
+                output_Box.Text = "Birthdate information could not be retrieved...";
+                
                 // terminate the algorithm
                 return;
             }
+
 
 
             // Calculate age based on retrieved data
